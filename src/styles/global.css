@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: #ffffff;
+    color: #151515;
+    font-family: Inter, Manrope, ui-sans-serif, system-ui, sans-serif;
+  }
+
+  button,
+  input,
+  textarea {
+    font: inherit;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  :focus-visible {
+    outline: 3px solid rgba(255, 107, 26, 0.5);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  .premium-button {
+    @apply inline-flex min-h-12 items-center gap-2 rounded-full bg-ink px-6 text-sm font-black uppercase tracking-[0.08em] text-white transition hover:-translate-y-0.5 hover:bg-orange-hover;
+  }
+
+  .secondary-button {
+    @apply inline-flex min-h-12 items-center gap-2 rounded-full border border-line bg-paper px-6 text-sm font-black uppercase tracking-[0.08em] text-ink transition hover:-translate-y-0.5 hover:border-orange hover:text-orange;
+  }
+
+  .icon-button {
+    @apply grid h-11 w-11 place-items-center rounded-full border border-line bg-paper text-ink transition hover:border-orange hover:text-orange;
+  }
+
+  .eyebrow {
+    @apply text-xs font-black uppercase tracking-[0.18em] text-orange;
+  }
+
+  .section-heading {
+    @apply text-[clamp(2.4rem,6vw,5.6rem)] font-black leading-[0.92] tracking-[-0.04em];
+  }
+
+  .field {
+    @apply w-full rounded-2xl border border-line bg-soft px-4 py-3 text-sm font-semibold text-ink transition focus:border-orange focus:bg-paper;
+  }
+
+  .portal-link {
+    @apply rounded-2xl border border-line bg-soft px-5 py-8 text-center text-sm font-black uppercase tracking-[0.14em] transition hover:-translate-y-1 hover:border-orange hover:text-orange;
+  }
+
+  .dashboard-tile {
+    @apply flex min-h-32 flex-col items-start justify-between rounded-xl2 border border-line bg-paper p-5 text-left text-lg font-black shadow-card transition hover:-translate-y-1 hover:border-orange;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}

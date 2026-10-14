@@ -1,0 +1,5 @@
+node_modules/
+dist/
+api/.env
+api/data/*.sqlite
+api/data/*.sqlite-*
