@@ -6,6 +6,38 @@ import { useCart } from "../services/cart";
 import { usePortalData } from "../services/portalData";
 import { currency, getProductPrice } from "../utils/productPricing";
 
+const WHATSAPP_NUMBER = "919552514812";
+
+function buildWhatsAppOrderMessage({
+  customer,
+  company,
+  email,
+  items,
+}: {
+  customer: string;
+  company: string;
+  email: string;
+  items: Array<{ name: string; quantity: number; price: number }>;
+}) {
+  const itemSummary = items
+    .map((item) => `- ${item.name} x${item.quantity} (${currency.format(item.price * item.quantity)})`)
+    .join("\n");
+
+  return [
+    "New order request from Ensure Solutions website",
+    `Customer: ${customer}`,
+    `Company: ${company}`,
+    `Email: ${email}`,
+    "Products:",
+    itemSummary,
+    "Please review and contact the customer for confirmation.",
+  ].join("\n");
+}
+
+function buildWhatsAppUrl(message: string) {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
 export function CheckoutPage() {
   const { lines, clearCart } = useCart();
   const { session } = useAuth();
@@ -36,6 +68,20 @@ export function CheckoutPage() {
     if (unavailableLines.length) {
       return;
     }
+
+    const orderItems = currentLines.map(({ product, quantity }) => ({
+      name: product.name,
+      quantity,
+      price: getProductPrice(product),
+    }));
+
+    const summaryMessage = buildWhatsAppOrderMessage({
+      customer: customer.trim(),
+      company: company.trim(),
+      email: email.trim(),
+      items: orderItems,
+    });
+
     for (const line of lines) {
       createCustomerOrder({
         customer: customer.trim(),
@@ -45,8 +91,10 @@ export function CheckoutPage() {
         quantity: line.quantity,
       });
     }
+
     clearCart();
     setSubmitted(true);
+    window.open(buildWhatsAppUrl(summaryMessage), "_blank", "noopener,noreferrer");
   };
 
   if (submitted) {
@@ -59,7 +107,7 @@ export function CheckoutPage() {
             Your quote request is in review.
           </h1>
           <p className="mt-5 text-lg text-muted">
-            Your order is in the staff queue. You can track it from the customer portal using {email}.
+            Your order summary has been opened in WhatsApp to +91 95525 14812 so the team can review and respond.
           </p>
           <Link className="premium-button mt-8" to="/login">
             Customer login
